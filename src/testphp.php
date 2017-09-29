@@ -14,8 +14,17 @@ if (!$mysqli) {
 
 $mysqli->set_charset("utf8");
 
+$sql1="select SUM(sum) as total_amount from finance";
+$result1=$mysqli->query($sql1);
+if ($result1 == false) {
+	echo $mysqli->error;
+	echo $mysqli->errno;
+}
+$row1=$result1->fetch_assoc();
+$total_amount=$row1['total_amount'];
+//echo $total_amount;
 
-$sql="select * from finance order by id";
+$sql="select * from finance order by id DESC";
 
 $result=$mysqli->query($sql);
 if($result == false) {
@@ -59,7 +68,9 @@ while ($row=$result->fetch_assoc()) {
 		$amt=(int)$sum;
 	else
 		$amt=0;
-	$balance+=$amt;
+//	$balance+=$amt;
+	$balance=$total_amount;
+	$total_amount-=$amt;
 	if ($amt >= 0) {
 		echo "<td>" . $amt . ".00</td>";
 		echo "<td></td>";
